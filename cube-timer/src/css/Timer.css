@@ -1,0 +1,11 @@
+.timer {
+    font-family: "digital-clock-font";
+    text-align: center;
+    font-size: 10em;
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "digital-clock-font";
+    src: url("../fonts/digital-7.ttf");
+}
