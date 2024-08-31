@@ -11,16 +11,29 @@ interface TimeEntry {
 function Timer() {
     const [ startDate, setStartDate ] = useState<Date>(new Date());
     const [ timing, setTiming ] = useState<boolean>();
-    let time;
+    const [ time , setTime ] = useState<string>('0');
+    const [ timerInterval, setTimerInterval ] = useState<NodeJS.Timeout>();
+
+    function updateCurrentTime() {
+        setTime(((new Date().getTime() - startDate.getTime()) / 1000).toFixed(2));
+    }
 
     function startTimer() {
-        setStartDate(new Date());
-        setTiming(true);
+        if (!timing) {
+            setStartDate(new Date());
+            setTimerInterval(setInterval(() => {
+                setTime((((new Date()).getTime() - startDate.getTime()) / 1000).toFixed(1));
+            }, 10));
+            setTiming(true);
+        }
     }
     
     function endTimer() {
         if (timing) {
-            time = ((new Date().getTime() - startDate.getTime()) / 1000).toFixed(2);
+            clearInterval(timerInterval);
+            updateCurrentTime();
+            setTiming(false);
+
         }
     }
 
