@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
-import { useState, useRef } from 'react';
-import './css/Timer.css'
+import { useState, useRef, useEffect } from 'react';
+import './css/Timer.css';
+import TimeList from './TimeList';
 
-// interface TimeEntry {
-// 	time: number;
-// 	ao5: number;
-// 	ao12: number;
-// }
+export interface TimeEntry {
+	time: number;
+	ao5: number;
+	ao12: number;
+}
 
 function Timer() {
     const [ startTime, setStartTime ] = useState<number>(0);
@@ -50,7 +50,6 @@ function Timer() {
     }
     
     function handleKeyUp(event: KeyboardEvent) {
-
         if (event.key === ' ' && !timing) {
             setTiming(true);
             startTimer();
@@ -74,6 +73,7 @@ function Timer() {
     return (
         <div>
             <div className="timer" style={{color: timeColor}}>{time.toFixed(1)}</div>
+            <TimeList />
         </div>
     );
 }
