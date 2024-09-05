@@ -15,6 +15,10 @@ function Timer() {
     const [ keyDown, setKeyDown ] = useState<boolean>(false); // To avoid key press repeats when holding down space, event.repeat is buggy
     const [ timeColor, setTimeColor ] = useState<string>("black");
 
+    const [ timeList, setTimeList ] = useState<TimeEntry[]>([]);
+
+    
+
     const timerInterval = useRef<NodeJS.Timeout>();
 
     let time: number = 0;
@@ -34,6 +38,10 @@ function Timer() {
     
     function endTimer() {
         clearInterval(timerInterval.current);
+        setTimeList([
+            ...timeList,
+            {time: time, ao5: 0, ao12: 0}
+        ])
     }
     
     function handleKeyDown(event: KeyboardEvent) {
@@ -73,7 +81,7 @@ function Timer() {
     return (
         <div>
             <div className="timer" style={{color: timeColor}}>{time.toFixed(1)}</div>
-            <TimeList />
+            <TimeList timeList={timeList}/>
         </div>
     );
 }
