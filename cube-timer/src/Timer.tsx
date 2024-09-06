@@ -6,6 +6,7 @@ export interface TimeEntry {
 	time: number;
 	ao5: number;
 	ao12: number;
+    timestamp: number;
 }
 
 function Timer() {
@@ -16,8 +17,6 @@ function Timer() {
     const [ timeColor, setTimeColor ] = useState<string>("black");
 
     const [ timeList, setTimeList ] = useState<TimeEntry[]>([]);
-
-    
 
     const timerInterval = useRef<NodeJS.Timeout>();
 
@@ -40,7 +39,12 @@ function Timer() {
         clearInterval(timerInterval.current);
         setTimeList([
             ...timeList,
-            {time: time, ao5: 0, ao12: 0}
+            {
+                time: time,
+                ao5: 0,
+                ao12: 0,
+                timestamp: now,
+            }
         ])
     }
     
@@ -68,6 +72,14 @@ function Timer() {
         setKeyDown(false);
     }
 
+    function handleDelete(index: number) {
+        setTimeList(
+            timeList.filter((entry, i: number) => {
+                return i !== index;
+            })
+        )
+    }
+
     useEffect(() => {
         // I don't know if this is good in React but hopefully it is
         document.addEventListener('keydown', handleKeyDown);
@@ -81,7 +93,7 @@ function Timer() {
     return (
         <div>
             <div className="timer" style={{color: timeColor}}>{time.toFixed(1)}</div>
-            <TimeList timeList={timeList}/>
+            <TimeList timeList={timeList} onDelete={handleDelete}/>
         </div>
     );
 }
