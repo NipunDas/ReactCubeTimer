@@ -1,14 +1,10 @@
-import React from 'react';
-// import logo from './logo.svg';
-import Timer from './Timer';
-// import './App.css';
+import React from 'react'
+import { Timer } from './components/Timer'
 
-function App() {
+export const App: React.FunctionComponent = (): JSX.Element => {
   return (
-    <div>
+    <>
       <Timer />
-    </div>
-  );
+    </>
+  )
 }
-
-export default App;
