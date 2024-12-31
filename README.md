@@ -2,7 +2,7 @@
 
 ## Contributing
 
-## Starting a Local Dev Server
+### Starting a Local Dev Server
 
 To start a local server:
 ```npm start```

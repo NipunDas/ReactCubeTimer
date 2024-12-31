@@ -25,7 +25,7 @@ export const TimeList: React.FunctionComponent<TimeListProps> = ({
       {timeList.map((entry, index) => (
         <tr key={entry.timestamp}>
           <td>{index + 1}</td>
-          <td>{entry.time.toFixed(2)}</td>
+          <td>{entry.timeInSeconds.toFixed(2)}</td>
           <td>{entry.ao5}</td>
           <td>{entry.ao12}</td>
           <td>
