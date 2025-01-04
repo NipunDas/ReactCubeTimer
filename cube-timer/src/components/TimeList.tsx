@@ -19,6 +19,7 @@ export const TimeList: React.FunctionComponent<TimeListProps> = ({
         <th>ao5</th>
         <th>ao12</th>
         <th>Delete</th>
+        <th>Scramble</th>
       </tr>
     </thead>
     <tbody>
@@ -31,6 +32,7 @@ export const TimeList: React.FunctionComponent<TimeListProps> = ({
           <td>
             <button onClick={() => onDelete(index)}>X</button>
           </td>
+          <td>{entry.scramble}</td>
         </tr>
       ))}
     </tbody>
