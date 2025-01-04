@@ -1,19 +1,15 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import { ScrambleContext } from '../providers/ScrambleProvider'
+import { TimeListContext } from '../providers/TimeListProvider'
 import '../css/Timer.css'
 
-interface TimeDisplayProps {
-  submitTime: (timeInSeconds: number, scramble: string) => void
-}
-
-export const TimeDisplay: React.FunctionComponent<TimeDisplayProps> = ({
-  submitTime,
-}): JSX.Element => {
+export const TimeDisplay: React.FunctionComponent = (): JSX.Element => {
   const [startTime, setStartTime] = useState<number>(0)
   const [now, setNow] = useState<number>(0)
   const [timing, setTiming] = useState<boolean>(false) // used to prevent back-to-back triggering of timer
   const [keyDown, setKeyDown] = useState<string>('') // To avoid key press repeats when holding down space (event.repeat is buggy)
   const { scramble, fetchScramble } = useContext(ScrambleContext)
+  const { submitTime } = useContext(TimeListContext)
 
   // new scramble is generated after timer starts, so previous scramble needs to be cached to submit along with time
   const [cachedScramble, setCachedScramble] = useState<string>('')
