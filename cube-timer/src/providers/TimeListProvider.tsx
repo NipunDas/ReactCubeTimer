@@ -17,7 +17,7 @@ interface TimeListContext {
 
 //TODO: update the timeList to correct averages when times are deleted
 function calculateAverage(list: number[]): number {
-  if (list.length == 0) {
+  if (list.length === 0) {
     return -1;
   }
 
