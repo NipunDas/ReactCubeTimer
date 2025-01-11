@@ -26,8 +26,8 @@ export const TimeList: React.FunctionComponent = (): JSX.Element => {
           <tr key={entry.timestamp}>
             <td>{index + 1}</td>
             <td>{entry.timeInSeconds.toFixed(2)}</td>
-            <td>{entry.ao5}</td>
-            <td>{entry.ao12}</td>
+            <td>{entry.ao5 == -1 ? '-' : entry.ao5.toFixed(2)}</td>
+            <td>{entry.ao12 == -1 ? '-' : entry.ao12.toFixed(2)}</td>
             <td>
               <button onClick={() => handleDelete(index)}>X</button>
             </td>
