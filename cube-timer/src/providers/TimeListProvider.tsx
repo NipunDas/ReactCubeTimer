@@ -50,7 +50,7 @@ export const TimeListProvider = ({
   const [timeList, setTimeList] = useState<TimeEntry[]>([])
 
   const submitTime = (timeInSeconds: number, scramble: string) => {
-    timeInSeconds = fix(timeInSeconds, 2) // truncate timeInSeconds to 2 decimal places
+    timeInSeconds = fix(timeInSeconds, 2) // truncate time to 2 decimal places
 
     // create list of times that includes the time that's about to be submitted
     const times = timeList.map((entry) => entry.timeInSeconds)
