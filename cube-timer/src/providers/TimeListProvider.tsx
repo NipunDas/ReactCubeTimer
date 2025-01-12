@@ -1,11 +1,19 @@
 import React, { useState, createContext } from 'react'
 import { TimeEntry } from '../types/timeTypes'
+import { mean, round, fix } from 'mathjs'
 
-interface TimeListContext {
+interface TimeListContextType {
   timeList: TimeEntry[]
   setTimeList: React.Dispatch<React.SetStateAction<TimeEntry[]>>
   submitTime: (timeInSeconds: number, scramble: string) => void
 }
+
+export const TimeListContext: React.Context<TimeListContextType> =
+  createContext({
+    timeList: [] as TimeEntry[],
+    setTimeList: (timeList: React.SetStateAction<TimeEntry[]>) => {},
+    submitTime: (timeInSeconds: number, scramble: string) => {},
+  })
 
 // Calculates the average of a list of times
 // Excludes the top 5% fastest times, and bottom 5% slowest times (rounded up to nearest whole number)
@@ -16,29 +24,25 @@ interface TimeListContext {
 // EX: ao100 excludes 5 slowest and 5 fastest times
 
 //TODO: update the timeList to correct averages when times are deleted
-function calculateAverage(list: number[]): number {
-  if (list.length === 0) {
-    return -1;
+const calculateAverage = (
+  list: number[],
+  averageSize: number
+): number | undefined => {
+  if (list.length < averageSize) {
+    return undefined
   }
 
-  list.sort();
+  const relevantTimes = list.slice(-averageSize)
+  relevantTimes.sort()
 
-  let excludeMargin = list.length <= 2 ? 0 : Math.ceil(list.length * 0.05);
-  let counting: number[] = list.slice(excludeMargin, list.length - excludeMargin);
+  const excludeMargin = averageSize <= 2 ? 0 : Math.ceil(averageSize * 0.05)
+  const counting = relevantTimes.slice(
+    excludeMargin,
+    averageSize - excludeMargin
+  )
 
-  let sum = 0;
-  for (let n of counting) {
-    sum += n;
-  }
-
-  return sum / counting.length;
+  return round(mean(counting), 2) // take mean of counting times, round to 2 decimal places
 }
-
-export const TimeListContext: React.Context<TimeListContext> = createContext({
-  timeList: [] as TimeEntry[],
-  setTimeList: (timeList: React.SetStateAction<TimeEntry[]>) => {},
-  submitTime: (timeInSeconds: number, scramble: string) => {},
-})
 
 export const TimeListProvider = ({
   children,
@@ -46,29 +50,18 @@ export const TimeListProvider = ({
   const [timeList, setTimeList] = useState<TimeEntry[]>([])
 
   const submitTime = (timeInSeconds: number, scramble: string) => {
-    //truncate timeInSeconds to 2 digits
-    timeInSeconds = Math.floor(timeInSeconds * 100) / 100;
+    timeInSeconds = fix(timeInSeconds, 2) // truncate timeInSeconds to 2 decimal places
 
-    let ao5: number = -1;
-    if (timeList.length >= 4) {
-      let last5Times: number[] = timeList.slice(-4).map(entry => entry.timeInSeconds)
-      last5Times.push(timeInSeconds);
-      ao5 = Number(calculateAverage(last5Times).toFixed(2));
-    }
-
-    let ao12: number = -1;
-    if (timeList.length >= 11) {
-      let last12Times: number[] = timeList.slice(-11).map(entry => entry.timeInSeconds)
-      last12Times.push(timeInSeconds);
-      ao12 = Number(calculateAverage(last12Times).toFixed(2));
-    }
+    // create list of times that includes the time that's about to be submitted
+    const times = timeList.map((entry) => entry.timeInSeconds)
+    times.push(timeInSeconds)
 
     setTimeList([
       ...timeList,
       {
         timeInSeconds,
-        ao5: ao5,
-        ao12: ao12,
+        ao5: calculateAverage(times, 5),
+        ao12: calculateAverage(times, 12),
         timestamp: Date.now(),
         scramble,
         comment: '',

@@ -3,19 +3,20 @@ import { randomScrambleForEvent } from 'cubing/scramble'
 import { Alg } from 'cubing/alg'
 import { EventID } from '../types/eventTypes'
 
-interface ScrambleContext {
+interface ScrambleContextType {
   scramble: string
   fetchScramble: () => void
   eventId: EventID
   setEventId: React.Dispatch<React.SetStateAction<EventID>>
 }
 
-export const ScrambleContext: React.Context<ScrambleContext> = createContext({
-  scramble: '',
-  fetchScramble: () => {},
-  eventId: '333' as EventID,
-  setEventId: (eventId: React.SetStateAction<EventID>) => {},
-})
+export const ScrambleContext: React.Context<ScrambleContextType> =
+  createContext({
+    scramble: '',
+    fetchScramble: () => {},
+    eventId: '333' as EventID,
+    setEventId: (eventId: React.SetStateAction<EventID>) => {},
+  })
 
 export const ScrambleProvider = ({
   children,
@@ -29,8 +30,9 @@ export const ScrambleProvider = ({
     )
   }, [eventId, setScramble])
 
-  // every time the event is changed, a new scramble should be fetched
-  useEffect(() => fetchScramble(), [eventId])
+  /* every time eventId is updated, fetchScramble is also updated, and
+    a new eventId means a new scramble should be fetched */
+  useEffect(fetchScramble, [fetchScramble])
 
   return (
     <ScrambleContext.Provider
