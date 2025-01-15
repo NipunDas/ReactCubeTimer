@@ -24,21 +24,19 @@ export const TimeListContext: React.Context<TimeListContextType> =
 // EX: ao100 excludes 5 slowest and 5 fastest times
 
 //TODO: update the timeList to correct averages when times are deleted
-const calculateAverage = (
+export const calculateAverage = (
   list: number[],
-  averageSize: number
 ): number | undefined => {
-  if (list.length < averageSize) {
+  if (list.length === 0) {
     return undefined
   }
 
-  const relevantTimes = list.slice(-averageSize)
-  relevantTimes.sort()
+  list.sort()
 
-  const excludeMargin = averageSize <= 2 ? 0 : Math.ceil(averageSize * 0.05)
-  const counting = relevantTimes.slice(
+  const excludeMargin = list.length <= 2 ? 0 : Math.ceil(list.length * 0.05)
+  const counting = list.slice(
     excludeMargin,
-    averageSize - excludeMargin
+    list.length - excludeMargin
   )
 
   return round(mean(counting), 2) // take mean of counting times, round to 2 decimal places
@@ -52,16 +50,16 @@ export const TimeListProvider = ({
   const submitTime = (timeInSeconds: number, scramble: string) => {
     timeInSeconds = fix(timeInSeconds, 2) // truncate time to 2 decimal places
 
-    // create list of times that includes the time that's about to be submitted
-    const times = timeList.map((entry) => entry.timeInSeconds)
-    times.push(timeInSeconds)
+    // // create list of times that includes the time that's about to be submitted
+    // const times = timeList.map((entry) => entry.timeInSeconds)
+    // times.push(timeInSeconds)
 
     setTimeList([
       ...timeList,
       {
         timeInSeconds,
-        ao5: calculateAverage(times, 5),
-        ao12: calculateAverage(times, 12),
+        ao5: 0,
+        ao12: 0,
         timestamp: Date.now(),
         scramble,
         comment: '',
