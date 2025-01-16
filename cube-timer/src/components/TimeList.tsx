@@ -9,7 +9,7 @@ import TableCell from '@mui/material/TableCell'
 import Button from '@mui/material/Button'
 import { TimeEntry } from '../types/timeTypes'
 
-// attempts to get an aoX from a given index in the list, otherwise returns '-'
+// attempts to get an aoX that ends at a given index in the list, otherwise returns '-'
 const tryGetAverageFromIndex = (
   list: number[],
   index: number,

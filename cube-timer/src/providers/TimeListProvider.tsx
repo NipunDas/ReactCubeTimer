@@ -15,7 +15,7 @@ export const TimeListContext: React.Context<TimeListContextType> =
     submitTime: (timeInSeconds: number, scramble: string) => {},
   })
 
-// Calculates the average of a list of times
+// Calculates the WCA average of a list of times
 // Excludes the top 5% fastest times, and bottom 5% slowest times (rounded up to nearest whole number)
 // if list is length n, then exclude 2 * ceil(5 * 0.05) times
 // exception if n <= 2, then we don't have enough times to exclude any
@@ -58,8 +58,6 @@ export const TimeListProvider = ({
       ...timeList,
       {
         timeInSeconds,
-        ao5: 0,
-        ao12: 0,
         timestamp: Date.now(),
         scramble,
         comment: '',
