@@ -7,26 +7,23 @@ import TableRow from '@mui/material/TableRow'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import Button from '@mui/material/Button'
-import { TimeEntry } from '../types/timeTypes'
 
-// attempts to get an aoX that ends at a given index in the list, otherwise returns '-'
-const tryGetAverageFromIndex = (
+// displays an aoX that ends at a given index in the list, if it is not possible to calculate the average then displays '-'
+const displayAverageFromIndex = (
   list: number[],
   index: number,
   x: number
-): number | string => {
+): string => {
   if (index < 0 || index > list.length) {
     return '-'
   }
   if (x > list.length || index - x + 1 < 0) {
     return '-'
   }
-  
-  console.log(index - x + 1, index + 1)
 
   // could probably handle the undefined case better
   let average = calculateAverage(list.slice(index - x + 1, index + 1))
-  return average ? average : '-'
+  return average ? average.toFixed(2) : '-'
 }
 
 export const TimeList: React.FunctionComponent = (): JSX.Element => {
@@ -55,8 +52,8 @@ export const TimeList: React.FunctionComponent = (): JSX.Element => {
           <TableRow key={entry.timestamp}>
             <TableCell>{index + 1}</TableCell>
             <TableCell>{entry.timeInSeconds.toFixed(2)}</TableCell>
-            <TableCell>{tryGetAverageFromIndex(timeInSecondsList, index, 5)}</TableCell>
-            <TableCell>{tryGetAverageFromIndex(timeInSecondsList, index, 12)}</TableCell>
+            <TableCell>{displayAverageFromIndex(timeInSecondsList, index, 5)}</TableCell>
+            <TableCell>{displayAverageFromIndex(timeInSecondsList, index, 12)}</TableCell>
             <TableCell>
               <Button variant='outlined' onClick={() => handleDelete(index)}>X</Button>
             </TableCell>
