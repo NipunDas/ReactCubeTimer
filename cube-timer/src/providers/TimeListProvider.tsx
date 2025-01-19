@@ -24,9 +24,7 @@ export const TimeListContext: React.Context<TimeListContextType> =
 // EX: ao100 excludes 5 slowest and 5 fastest times
 
 //TODO: update the timeList to correct averages when times are deleted
-export const calculateAverage = (
-  list: number[],
-): number | undefined => {
+export const calculateAverage = (list: number[]): number | undefined => {
   if (list.length === 0) {
     return undefined
   }
@@ -34,10 +32,7 @@ export const calculateAverage = (
   list.sort()
 
   const excludeMargin = list.length <= 2 ? 0 : Math.ceil(list.length * 0.05)
-  const counting = list.slice(
-    excludeMargin,
-    list.length - excludeMargin
-  )
+  const counting = list.slice(excludeMargin, list.length - excludeMargin)
 
   return round(mean(counting), 2) // take mean of counting times, round to 2 decimal places
 }

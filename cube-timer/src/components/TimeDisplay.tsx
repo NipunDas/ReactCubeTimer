@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import { ScrambleContext } from '../providers/ScrambleProvider'
 import { TimeListContext } from '../providers/TimeListProvider'
-import { fix } from 'mathjs'
+import { displayTime } from '../utils/timeConversion'
 import '../css/Timer.css'
 
 export const TimeDisplay: React.FunctionComponent = (): JSX.Element => {
@@ -72,7 +72,7 @@ export const TimeDisplay: React.FunctionComponent = (): JSX.Element => {
 
   return (
     <div className="timer" style={{ color: timeColor }}>
-      {fix(timeInSeconds, 2).toFixed(2)}
+      {displayTime(timeInSeconds)}
     </div>
   )
 }
