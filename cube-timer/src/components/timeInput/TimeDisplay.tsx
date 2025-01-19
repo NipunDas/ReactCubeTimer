@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
-import { ScrambleContext } from '../providers/ScrambleProvider'
-import { TimeListContext } from '../providers/TimeListProvider'
-import { displayTime } from '../utils/timeConversion'
-import '../css/Timer.css'
+import { ScrambleContext } from '../../providers/ScrambleProvider'
+import { TimeListContext } from '../../providers/TimeListProvider'
+import { displayTime } from '../../utils/timeConversion'
+import '../../css/Timer.css'
 
 export const TimeDisplay: React.FunctionComponent = (): JSX.Element => {
   const [startTime, setStartTime] = useState<number>(0)

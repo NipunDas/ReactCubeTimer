@@ -1,6 +1,6 @@
 import React, { useState, createContext } from 'react'
 import { TimeEntry } from '../types/timeTypes'
-import { mean, round, fix } from 'mathjs'
+import { mean, round, floor } from 'mathjs'
 
 interface TimeListContextType {
   timeList: TimeEntry[]
@@ -43,11 +43,7 @@ export const TimeListProvider = ({
   const [timeList, setTimeList] = useState<TimeEntry[]>([])
 
   const submitTime = (timeInSeconds: number, scramble: string) => {
-    timeInSeconds = fix(timeInSeconds, 2) // truncate time to 2 decimal places
-
-    // // create list of times that includes the time that's about to be submitted
-    // const times = timeList.map((entry) => entry.timeInSeconds)
-    // times.push(timeInSeconds)
+    timeInSeconds = floor(timeInSeconds, 2) // truncate time to 2 decimal places
 
     setTimeList([
       ...timeList,
