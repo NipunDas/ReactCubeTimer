@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import '../css/Timer.css'
 import { Scramble } from './Scramble'
-import { TimeList } from './TimeList'
+import { TimeList } from './timeList/TimeList'
 import { TimeDisplay } from './timeInput/TimeDisplay'
 import { KeyboardInput } from './timeInput/KeyboardInput'
 import Grid from '@mui/material/Grid2'
