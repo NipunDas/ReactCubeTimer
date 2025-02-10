@@ -6,6 +6,7 @@ import {
 } from '../../providers/TimeListProvider'
 import { displayTime } from '../../utils/timeConversion'
 import { TimeModalButton } from './TimeModalButton'
+import { AverageModalButton } from './AverageModalButton'
 import TableContainer from '@mui/material/TableContainer'
 import Table from '@mui/material/Table'
 import TableHead from '@mui/material/TableHead'
@@ -18,7 +19,7 @@ const displayAverageFromIndex = (
   list: number[],
   index: number,
   x: number
-): string => {
+): JSX.Element | string => {
   if (index < 0 || index > list.length) {
     return '-'
   }
@@ -28,7 +29,7 @@ const displayAverageFromIndex = (
 
   // could probably handle the undefined case better
   let average = calculateAverage(list.slice(index - x + 1, index + 1))
-  return average ? displayTime(average) : '-'
+  return average ? <AverageModalButton startIndex={index - x + 1} endIndex={index + 1} averageInSeconds={average}/> : '-'
 }
 
 export const TimeList: React.FunctionComponent = (): JSX.Element => {
