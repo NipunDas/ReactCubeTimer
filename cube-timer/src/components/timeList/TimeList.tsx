@@ -49,9 +49,9 @@ export const TimeList: React.FunctionComponent = (): JSX.Element => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {timeList.map((entry, index) => (
+          {timeList.toReversed().map((entry, index) => (
             <TableRow key={entry.timestamp}>
-              <TableCell>{index + 1}</TableCell>
+              <TableCell>{timeList.length - index}</TableCell>
               <TableCell>
                 <TimeModalButton
                   timeInSeconds={entry.timeInSeconds}
@@ -60,10 +60,10 @@ export const TimeList: React.FunctionComponent = (): JSX.Element => {
                 />
               </TableCell>
               <TableCell>
-                {displayAverageFromIndex(timeInSecondsList, index, 5)}
+                {displayAverageFromIndex(timeInSecondsList, timeList.length - index - 1, 5)}
               </TableCell>
               <TableCell>
-                {displayAverageFromIndex(timeInSecondsList, index, 12)}
+                {displayAverageFromIndex(timeInSecondsList, timeList.length - index - 1, 12)}
               </TableCell>
             </TableRow>
           ))}
