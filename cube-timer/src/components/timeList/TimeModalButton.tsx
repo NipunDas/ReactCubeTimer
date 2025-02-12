@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useRef } from 'react'
 import { TimeListContext } from '../../providers/TimeListProvider'
 import { displayTime } from '../../utils/timeConversion'
 import Box from '@mui/material/Box'
@@ -22,6 +22,7 @@ export const TimeModalButton: React.FunctionComponent<TimeModalProps> = ({
 }: TimeModalProps) => {
   const [open, setOpen] = useState(false)
   const { timeList, setTimeList } = useContext(TimeListContext)
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   const timeString = displayTime(timeInSeconds)
 
@@ -30,9 +31,14 @@ export const TimeModalButton: React.FunctionComponent<TimeModalProps> = ({
     setOpen(false)
   }
 
+  const handleClick = () => {
+    setOpen(true)
+    buttonRef.current?.blur()
+  }
+
   return (
     <>
-      <Button variant="text" onClick={() => setOpen(true)}>
+      <Button variant="text" ref={buttonRef} onClick={handleClick}>
         {timeString}
       </Button>
       <Modal open={open} onClose={() => setOpen(false)}>
