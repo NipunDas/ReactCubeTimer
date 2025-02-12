@@ -6,6 +6,8 @@ import Button from '@mui/material/Button'
 import Modal from '@mui/material/Modal'
 import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid2'
+import IconButton from '@mui/material/IconButton'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 export interface TimeModalProps {
   index: number
@@ -49,13 +51,13 @@ export const TimeModalButton: React.FunctionComponent<TimeModalProps> = ({
           }}
         >
           <Grid container>
-            <Grid size={8}>
+            <Grid size={11}>
               <Typography variant="h6">{`Time: ${timeString}`}</Typography>
             </Grid>
-            <Grid size={4}>
-              <Button variant="outlined" onClick={() => handleDelete(index)}>
-                X
-              </Button>
+            <Grid size={1}>
+              <IconButton onClick={() => handleDelete(index)}>
+                <DeleteIcon></DeleteIcon>
+              </IconButton>
             </Grid>
             <Grid size={12}>
               <Typography variant="subtitle1">{`Scramble: ${scramble}`}</Typography>

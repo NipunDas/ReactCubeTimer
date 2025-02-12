@@ -28,7 +28,6 @@ export const AverageModalButton: React.FunctionComponent<AverageModalProps> = ({
   const excluded = subList.map((entry, index) => entry.timeInSeconds)
   excluded.sort()
   excluded.splice(excludeMargin, count - 2 * excludeMargin)
-  // const excluded = [...numSubList.slice(0, excludeMargin), ...numSubList.slice(-excludeMargin)]
 
   let averageSummary = `Average of ${count}: ${timeString}\n\nTime List:\n`
   subList.forEach((entry, index) => {
