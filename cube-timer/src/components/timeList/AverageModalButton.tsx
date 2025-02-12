@@ -4,10 +4,7 @@ import { displayTime } from '../../utils/timeConversion'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Modal from '@mui/material/Modal'
-import Typography from '@mui/material/Typography'
-import Grid from '@mui/material/Grid2'
 import { TextField } from '@mui/material'
-import { TimeEntry } from '../../types/timeTypes'
 
 export interface AverageModalProps {
   startIndex: number
@@ -21,7 +18,7 @@ export const AverageModalButton: React.FunctionComponent<AverageModalProps> = ({
   averageInSeconds
 }: AverageModalProps) => {
   const [open, setOpen] = useState(false)
-  const { timeList, setTimeList } = useContext(TimeListContext)
+  const { timeList } = useContext(TimeListContext)
 
   const timeString = displayTime(averageInSeconds)
   const subList = timeList.slice(startIndex, endIndex)
@@ -43,7 +40,6 @@ export const AverageModalButton: React.FunctionComponent<AverageModalProps> = ({
     }
 
     averageSummary += `${index + 1}. ${time}\t ${entry.scramble}\n`
-
   })
 
   return (
