@@ -55,7 +55,7 @@ export const TimeList: React.FunctionComponent = (): JSX.Element => {
               <TableCell>
                 <TimeModalButton
                   timeInSeconds={entry.timeInSeconds}
-                  index={index}
+                  index={timeList.length - index - 1}
                   scramble={entry.scramble}
                 />
               </TableCell>
