@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import '../css/Timer.css'
 import { Scramble } from './Scramble'
 import { TimeList } from './timeList/TimeList'
@@ -7,6 +7,7 @@ import { KeyboardInput } from './timeInput/KeyboardInput'
 import Grid from '@mui/material/Grid2'
 import Switch from '@mui/material/Switch'
 import FormControlLabel from '@mui/material/FormControlLabel'
+import { SessionSelect } from './SessionSelect'
 
 export const Timer: React.FunctionComponent = (): JSX.Element => {
   const [isTyping, setIsTyping] = useState<boolean>(false)
@@ -28,6 +29,7 @@ export const Timer: React.FunctionComponent = (): JSX.Element => {
         <Scramble />
       </Grid>
       <Grid size={3}>
+        <SessionSelect />
         <TimeList />
       </Grid>
       <Grid size={9}>{isTyping ? <KeyboardInput /> : <TimeDisplay />}</Grid>

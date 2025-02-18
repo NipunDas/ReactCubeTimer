@@ -1,10 +1,7 @@
 import React, { useContext } from 'react'
 import '../../css/TimeList.css'
-import {
-  TimeListContext,
-  calculateAverage,
-} from '../../providers/TimeListProvider'
-import { displayTime } from '../../utils/timeConversion'
+import { calculateAverage } from '../../providers/TimeListProvider'
+import { SessionContext } from '../../providers/SessionProvider'
 import { TimeModalButton } from './TimeModalButton'
 import { AverageModalButton } from './AverageModalButton'
 import TableContainer from '@mui/material/TableContainer'
@@ -33,7 +30,8 @@ const displayAverageFromIndex = (
 }
 
 export const TimeList: React.FunctionComponent = (): JSX.Element => {
-  const { timeList } = useContext(TimeListContext)
+  const { currentSession } = useContext(SessionContext)
+  const timeList = currentSession.timeList
 
   let timeInSecondsList = timeList.map((entry) => entry.timeInSeconds)
 
@@ -55,7 +53,7 @@ export const TimeList: React.FunctionComponent = (): JSX.Element => {
               <TableCell>
                 <TimeModalButton
                   timeInSeconds={entry.timeInSeconds}
-                  index={timeList.length - index - 1}
+                  index={timeList.length - index - 1} // since the list is reversed, the real index is length - index - 1
                   scramble={entry.scramble}
                 />
               </TableCell>

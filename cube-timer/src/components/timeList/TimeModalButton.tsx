@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react'
-import { TimeListContext } from '../../providers/TimeListProvider'
+import { SessionContext } from '../../providers/SessionProvider'
 import { displayTime } from '../../utils/timeConversion'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -21,15 +21,10 @@ export const TimeModalButton: React.FunctionComponent<TimeModalProps> = ({
   scramble,
 }: TimeModalProps) => {
   const [open, setOpen] = useState(false)
-  const { timeList, setTimeList } = useContext(TimeListContext)
+  const { deleteTime } = useContext(SessionContext)
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   const timeString = displayTime(timeInSeconds)
-
-  const handleDelete = (index: number) => {
-    setTimeList(timeList.filter((_entry, i: number) => i !== index))
-    setOpen(false)
-  }
 
   const handleClick = () => {
     setOpen(true)
@@ -61,7 +56,7 @@ export const TimeModalButton: React.FunctionComponent<TimeModalProps> = ({
               <Typography variant="h6">{`Time: ${timeString}`}</Typography>
             </Grid>
             <Grid size={1}>
-              <IconButton onClick={() => handleDelete(index)}>
+              <IconButton onClick={() => deleteTime(index)}>
                 <DeleteIcon></DeleteIcon>
               </IconButton>
             </Grid>

@@ -1,28 +1,31 @@
-import React, { useState, useEffect, useCallback, createContext } from 'react'
+import React, { useState, useEffect, useCallback, createContext, useContext } from 'react'
 import { randomScrambleForEvent } from 'cubing/scramble'
 import { Alg } from 'cubing/alg'
 import { EventID } from '../types/eventTypes'
+import { SessionContext } from './SessionProvider'
 
 interface ScrambleContextType {
   scramble: string
   fetchScramble: () => void
-  eventId: EventID
-  setEventId: React.Dispatch<React.SetStateAction<EventID>>
+  // eventId: EventID
+  // setEventId: React.Dispatch<React.SetStateAction<EventID>>
 }
 
 export const ScrambleContext: React.Context<ScrambleContextType> =
   createContext({
     scramble: '',
     fetchScramble: () => {},
-    eventId: '333' as EventID,
-    setEventId: (eventId: React.SetStateAction<EventID>) => {},
+    // eventId: '333' as EventID,
+    // setEventId: (eventId: React.SetStateAction<EventID>) => {},
   })
 
 export const ScrambleProvider = ({
   children,
 }: React.PropsWithChildren): JSX.Element => {
   const [scramble, setScramble] = useState<string>('')
-  const [eventId, setEventId] = useState<EventID>('333')
+  // const [eventId, setEventId] = useState<EventID>('333')
+  const { currentSession } = useContext(SessionContext)
+  const eventId = currentSession.eventId
 
   const fetchScramble = useCallback(() => {
     randomScrambleForEvent(eventId).then((alg: Alg) =>
@@ -36,7 +39,7 @@ export const ScrambleProvider = ({
 
   return (
     <ScrambleContext.Provider
-      value={{ scramble, fetchScramble, eventId, setEventId }}
+      value={{ scramble, fetchScramble }}
     >
       {children}
     </ScrambleContext.Provider>

@@ -1,5 +1,6 @@
 import React, { useState, useContext, useRef } from 'react'
-import { TimeListContext } from '../../providers/TimeListProvider'
+// import { TimeListContext } from '../../providers/TimeListProvider'
+import { SessionContext } from '../../providers/SessionProvider'
 import { displayTime } from '../../utils/timeConversion'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -18,7 +19,8 @@ export const AverageModalButton: React.FunctionComponent<AverageModalProps> = ({
   averageInSeconds
 }: AverageModalProps) => {
   const [open, setOpen] = useState(false)
-  const { timeList } = useContext(TimeListContext)
+  const { currentSession } = useContext(SessionContext)
+  const timeList = currentSession.timeList
   const buttonRef = useRef<HTMLButtonElement | null>(null)
 
   const timeString = displayTime(averageInSeconds)
