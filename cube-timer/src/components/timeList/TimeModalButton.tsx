@@ -22,7 +22,7 @@ export const TimeModalButton: React.FunctionComponent<TimeModalProps> = ({
 }: TimeModalProps) => {
   const [open, setOpen] = useState(false)
   const { deleteTime } = useContext(SessionContext)
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null)
 
   const timeString = displayTime(timeInSeconds)
 

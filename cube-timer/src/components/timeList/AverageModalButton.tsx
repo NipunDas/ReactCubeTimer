@@ -16,7 +16,7 @@ export interface AverageModalProps {
 export const AverageModalButton: React.FunctionComponent<AverageModalProps> = ({
   startIndex,
   endIndex,
-  averageInSeconds
+  averageInSeconds,
 }: AverageModalProps) => {
   const [open, setOpen] = useState(false)
   const { currentSession } = useContext(SessionContext)
@@ -69,19 +69,19 @@ export const AverageModalButton: React.FunctionComponent<AverageModalProps> = ({
             borderRadius: 2,
           }}
         >
-            <TextField 
-              variant="outlined"
-              fullWidth
-              multiline
-              minRows={20}
-              maxRows={20}
-              defaultValue={averageSummary}
-              slotProps={{
-                input: {
-                  readOnly: true
-                }
-              }}
-            />
+          <TextField
+            variant="outlined"
+            fullWidth
+            multiline
+            minRows={20}
+            maxRows={20}
+            defaultValue={averageSummary}
+            slotProps={{
+              input: {
+                readOnly: true,
+              },
+            }}
+          />
         </Box>
       </Modal>
     </>

@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, createContext, useContext } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  createContext,
+  useContext,
+} from 'react'
 import { randomScrambleForEvent } from 'cubing/scramble'
 import { Alg } from 'cubing/alg'
 import { EventID } from '../types/eventTypes'
@@ -38,9 +44,7 @@ export const ScrambleProvider = ({
   useEffect(fetchScramble, [fetchScramble])
 
   return (
-    <ScrambleContext.Provider
-      value={{ scramble, fetchScramble }}
-    >
+    <ScrambleContext.Provider value={{ scramble, fetchScramble }}>
       {children}
     </ScrambleContext.Provider>
   )

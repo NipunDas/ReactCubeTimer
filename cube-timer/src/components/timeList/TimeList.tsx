@@ -26,7 +26,15 @@ const displayAverageFromIndex = (
 
   // could probably handle the undefined case better
   let average = calculateAverage(list.slice(index - x + 1, index + 1))
-  return average ? <AverageModalButton startIndex={index - x + 1} endIndex={index + 1} averageInSeconds={average}/> : '-'
+  return average ? (
+    <AverageModalButton
+      startIndex={index - x + 1}
+      endIndex={index + 1}
+      averageInSeconds={average}
+    />
+  ) : (
+    '-'
+  )
 }
 
 export const TimeList: React.FunctionComponent = (): JSX.Element => {
@@ -58,10 +66,18 @@ export const TimeList: React.FunctionComponent = (): JSX.Element => {
                 />
               </TableCell>
               <TableCell>
-                {displayAverageFromIndex(timeInSecondsList, timeList.length - index - 1, 5)}
+                {displayAverageFromIndex(
+                  timeInSecondsList,
+                  timeList.length - index - 1,
+                  5
+                )}
               </TableCell>
               <TableCell>
-                {displayAverageFromIndex(timeInSecondsList, timeList.length - index - 1, 12)}
+                {displayAverageFromIndex(
+                  timeInSecondsList,
+                  timeList.length - index - 1,
+                  12
+                )}
               </TableCell>
             </TableRow>
           ))}

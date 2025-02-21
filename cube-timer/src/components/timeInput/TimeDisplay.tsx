@@ -23,10 +23,10 @@ export const TimeDisplay: React.FunctionComponent = (): JSX.Element => {
   const timeInSeconds = timerState === 'ready' ? 0 : (now - startTime) / 1000.0
 
   const color = {
-    'stop': 'black',
-    'waiting': 'red',
-    'ready': 'green',
-    'running': 'black'
+    stop: 'black',
+    waiting: 'red',
+    ready: 'green',
+    running: 'black',
   }[timerState]
 
   const startTimer = () => {
@@ -51,7 +51,7 @@ export const TimeDisplay: React.FunctionComponent = (): JSX.Element => {
     waitingTimeout.current = setTimeout(() => {
       // use a state updater function to get the value of state when the function is called,
       // instead of the value of state during this render
-      setTimerState(state => state === 'waiting' ? 'ready' : state )
+      setTimerState((state) => (state === 'waiting' ? 'ready' : state))
     }, 500)
   }
 
@@ -84,10 +84,12 @@ export const TimeDisplay: React.FunctionComponent = (): JSX.Element => {
     if (event.key === ' ') {
       setSpaceDown(false)
 
-      if (timerState === 'ready') { // timer is ready to begin (have held space long enough)
+      if (timerState === 'ready') {
+        // timer is ready to begin (have held space long enough)
         setTimerState('running')
         startTimer()
-      } else if (timerState === 'waiting') { // timer is not ready to begin yet (have not held space long enough)
+      } else if (timerState === 'waiting') {
+        // timer is not ready to begin yet (have not held space long enough)
         setTimerState('stop')
         stopWaiting()
       }

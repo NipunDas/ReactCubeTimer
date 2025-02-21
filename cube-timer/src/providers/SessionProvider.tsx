@@ -21,21 +21,32 @@ export interface Session {
   eventId: EventID
 }
 
-const initialSessionList = JSON.parse(localStorage.getItem('sessionList') || '[{"name":"1","timeList":[],"eventId":"333"}]')
+const initialSessionList = JSON.parse(
+  localStorage.getItem('sessionList') ||
+    '[{"name":"1","timeList":[],"eventId":"333"}]'
+)
+const initialCurrentIndex = JSON.parse(
+  localStorage.getItem('currentIndex') || '0'
+)
 
-export const SessionContext: React.Context<SessionContextType> =
-  createContext({} as SessionContextType)
+export const SessionContext: React.Context<SessionContextType> = createContext(
+  {} as SessionContextType
+)
 
 export const SessionProvider = ({
   children,
 }: React.PropsWithChildren): JSX.Element => {
   const [sessionList, setSessionList] = useState<Session[]>(initialSessionList)
-  const [currentIndex, setCurrentIndex] = useState<number>(0)
+  const [currentIndex, setCurrentIndex] = useState<number>(initialCurrentIndex)
   let currentSession = sessionList[currentIndex]
 
   useEffect(() => {
     localStorage.setItem('sessionList', JSON.stringify(sessionList))
   }, [sessionList])
+
+  useEffect(() => {
+    localStorage.setItem('currentIndex', JSON.stringify(currentIndex))
+  }, [currentIndex])
 
   /* Submit a time to the current session */
   const submitTime = (timeInSeconds: number, scramble: string): void => {
@@ -43,19 +54,22 @@ export const SessionProvider = ({
 
     let updatedSession = {
       name: currentSession.name,
-      timeList: [...currentSession.timeList, {
-        timeInSeconds,
-        timestamp: Date.now(),
-        scramble,
-        comment: ''
-      }],
-      eventId: currentSession.eventId
+      timeList: [
+        ...currentSession.timeList,
+        {
+          timeInSeconds,
+          timestamp: Date.now(),
+          scramble,
+          comment: '',
+        },
+      ],
+      eventId: currentSession.eventId,
     }
 
     setSessionList([
       ...sessionList.slice(0, currentIndex),
       updatedSession,
-      ...sessionList.slice(currentIndex + 1)
+      ...sessionList.slice(currentIndex + 1),
     ])
   }
 
@@ -64,7 +78,7 @@ export const SessionProvider = ({
     let updatedSession = {
       name: currentSession.name,
       timeList: currentSession.timeList.filter((_, i: number) => i !== index),
-      eventId: currentSession.eventId
+      eventId: currentSession.eventId,
     }
 
     setSessionList(sessionList.toSpliced(currentIndex, 1, updatedSession))
@@ -75,7 +89,7 @@ export const SessionProvider = ({
     let updatedSession = {
       name: currentSession.name,
       timeList: currentSession.timeList,
-      eventId: id
+      eventId: id,
     }
 
     setSessionList(sessionList.toSpliced(currentIndex, 1, updatedSession))
@@ -85,7 +99,11 @@ export const SessionProvider = ({
   const createSession = (): void => {
     setSessionList([
       ...sessionList,
-      {name: (sessionList.length + 1).toString(), timeList: [], eventId: '333'}
+      {
+        name: (sessionList.length + 1).toString(),
+        timeList: [],
+        eventId: '333',
+      },
     ])
   }
 
@@ -102,7 +120,7 @@ export const SessionProvider = ({
     deleteTime,
     setEventId,
     createSession,
-    deleteSession
+    deleteSession,
   }
 
   return (
