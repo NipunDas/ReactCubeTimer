@@ -4,23 +4,30 @@ import { SessionContext } from '../../providers/SessionProvider'
 import { displayTime } from '../../utils/timeConversion'
 import '../../css/Timer.css'
 
+type TimerState = 'waiting' | 'ready' | 'running' | 'stop'
+
 export const TimeDisplay: React.FunctionComponent = (): JSX.Element => {
   const [startTime, setStartTime] = useState<number>(0)
   const [now, setNow] = useState<number>(0)
-  const [timing, setTiming] = useState<boolean>(false) // used to prevent back-to-back triggering of timer
-  const [keyDown, setKeyDown] = useState<string>('') // To avoid key press repeats when holding down space (event.repeat is buggy)
   const { scramble, fetchScramble } = useContext(ScrambleContext)
   const { submitTime } = useContext(SessionContext)
 
-  // new scramble is generated after timer starts, so previous scramble needs to be cached to submit along with time
-  const [cachedScramble, setCachedScramble] = useState<string>('')
+  const [timerState, setTimerState] = useState<TimerState>('stop')
+  const [spaceDown, setSpaceDown] = useState<boolean>(false)
+  //spaceDown is used to avoid keydown event repeats when space is held down (event.repeat is buggy on chrome)
+  //https://issues.chromium.org/issues/40940886
 
   const timerInterval = useRef<NodeJS.Timer>()
+  const waitingTimeout = useRef<NodeJS.Timeout>()
 
-  // if key is being held prior to starting timer, make display 0 and make time green
-  const aboutToStart = keyDown === ' ' && !timing
-  const timeInSeconds = aboutToStart ? 0 : (now - startTime) / 1000.0
-  const timeColor = aboutToStart ? 'green' : 'black'
+  const timeInSeconds = (now - startTime) / 1000.0
+
+  const color = {
+    'stop': 'black',
+    'waiting': 'red',
+    'ready': 'green',
+    'running': 'black'
+  }[timerState]
 
   const startTimer = () => {
     setStartTime(Date.now())
@@ -33,31 +40,56 @@ export const TimeDisplay: React.FunctionComponent = (): JSX.Element => {
   const endTimer = () => {
     setNow(Date.now())
     clearInterval(timerInterval.current)
+    submitTime(timeInSeconds, scramble)
+    fetchScramble()
+  }
+
+  // the user must hold space for a period of time in order for the timer to be 'ready'
+  // this is handled by the setTimeout function
+  // startWaiting begins the Timeout and stores its id to be stopped if needed
+  const startWaiting = () => {
+    waitingTimeout.current = setTimeout(() => {
+      // use a state updater function to get the value of state when the function is called,
+      // instead of the value of state during this render
+      setTimerState(state => state === 'waiting' ? 'ready' : state )
+    }, 500)
+  }
+
+  const stopWaiting = () => {
+    clearTimeout(waitingTimeout.current)
   }
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (!keyDown) {
-      setKeyDown(event.key)
+    if (!spaceDown && event.key === ' ') {
+      setSpaceDown(true)
 
-      if (timing) {
-        endTimer()
-      } else if (event.key === ' ') {
-        setStartTime(Date.now)
+      // it's important to check multiple conditions when trying to start the timer
+      // !spaceDown -> don't trigger on events that fire from space being held, only when its initially pressed
+      // event.key === ' ' -> needs to be the space key
+      // timerState === stop -> only try to start if the timer isn't running
+      if (timerState === 'stop') {
+        setTimerState('waiting')
+        startWaiting()
       }
+    }
+
+    if (timerState === 'running') {
+      setTimerState('stop')
+      endTimer()
     }
   }
 
   const handleKeyUp = (event: KeyboardEvent) => {
-    setKeyDown('')
+    if (event.key === ' ') {
+      setSpaceDown(false)
 
-    if (event.key === ' ' && !timing) {
-      setTiming(true)
-      startTimer()
-      setCachedScramble(scramble)
-      fetchScramble()
-    } else if (timing) {
-      setTiming(false)
-      submitTime(timeInSeconds, cachedScramble)
+      if (timerState === 'ready') { // timer is ready to begin (have held space long enough)
+        setTimerState('running')
+        startTimer()
+      } else if (timerState === 'waiting') { // timer is not ready to begin yet (have not held space long enough)
+        setTimerState('stop')
+        stopWaiting()
+      }
     }
   }
 
@@ -71,7 +103,7 @@ export const TimeDisplay: React.FunctionComponent = (): JSX.Element => {
   })
 
   return (
-    <div className="timer" style={{ color: timeColor }}>
+    <div className="timer" style={{ color: color }}>
       {displayTime(timeInSeconds)}
     </div>
   )
