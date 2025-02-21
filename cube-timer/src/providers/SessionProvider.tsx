@@ -1,4 +1,4 @@
-import React, { useState, createContext } from 'react'
+import React, { useState, createContext, useEffect } from 'react'
 import { TimeEntry } from '../types/timeTypes'
 import { mean, round, floor } from 'mathjs'
 import { EventID } from '../types/eventTypes'
@@ -21,15 +21,21 @@ export interface Session {
   eventId: EventID
 }
 
+const initialSessionList = JSON.parse(localStorage.getItem('sessionList') || '[{"name":"1","timeList":[],"eventId":"333"}]')
+
 export const SessionContext: React.Context<SessionContextType> =
   createContext({} as SessionContextType)
 
 export const SessionProvider = ({
   children,
 }: React.PropsWithChildren): JSX.Element => {
-  const [sessionList, setSessionList] = useState<Session[]>([{name: '1', timeList: [], eventId: '333'}])
+  const [sessionList, setSessionList] = useState<Session[]>(initialSessionList)
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   let currentSession = sessionList[currentIndex]
+
+  useEffect(() => {
+    localStorage.setItem('sessionList', JSON.stringify(sessionList))
+  }, [sessionList])
 
   /* Submit a time to the current session */
   const submitTime = (timeInSeconds: number, scramble: string): void => {
