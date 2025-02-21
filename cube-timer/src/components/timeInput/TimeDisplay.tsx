@@ -20,7 +20,7 @@ export const TimeDisplay: React.FunctionComponent = (): JSX.Element => {
   const timerInterval = useRef<NodeJS.Timer>()
   const waitingTimeout = useRef<NodeJS.Timeout>()
 
-  const timeInSeconds = (now - startTime) / 1000.0
+  const timeInSeconds = timerState === 'ready' ? 0 : (now - startTime) / 1000.0
 
   const color = {
     'stop': 'black',
@@ -60,6 +60,7 @@ export const TimeDisplay: React.FunctionComponent = (): JSX.Element => {
   }
 
   const handleKeyDown = (event: KeyboardEvent) => {
+    //event.preventDefault()
     if (!spaceDown && event.key === ' ') {
       setSpaceDown(true)
 

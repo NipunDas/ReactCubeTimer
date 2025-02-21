@@ -1,6 +1,6 @@
 import React, { useState, createContext, useEffect } from 'react'
 import { TimeEntry } from '../types/timeTypes'
-import { mean, round, floor } from 'mathjs'
+import { floor } from 'mathjs'
 import { EventID } from '../types/eventTypes'
 
 interface SessionContextType {

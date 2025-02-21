@@ -1,6 +1,7 @@
 .timer {
   font-family: 'digital-clock-font';
-  text-align: center;
+  text-align: left;
+  text-indent: 200px;
   font-size: 10em;
   font-weight: bold;
 }
