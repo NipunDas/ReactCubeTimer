@@ -2,7 +2,6 @@ import { MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import React, { useContext } from 'react'
 import { SessionContext, Session } from '../providers/SessionProvider'
-import { ScrambleContext } from '../providers/ScrambleProvider'
 
 export const SessionSelect: React.FunctionComponent = (): JSX.Element => {
   const {

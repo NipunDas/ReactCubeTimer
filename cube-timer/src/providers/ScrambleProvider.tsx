@@ -7,7 +7,6 @@ import React, {
 } from 'react'
 import { randomScrambleForEvent } from 'cubing/scramble'
 import { Alg } from 'cubing/alg'
-import { EventID } from '../types/eventTypes'
 import { SessionContext } from './SessionProvider'
 
 interface ScrambleContextType {

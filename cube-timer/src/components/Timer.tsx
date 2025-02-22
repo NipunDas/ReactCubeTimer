@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import '../css/Timer.css'
 import { Scramble } from './Scramble'
 import { TimeList } from './timeList/TimeList'

@@ -1,4 +1,5 @@
-import React, { useState, createContext, useEffect } from 'react'
+import React, { createContext } from 'react'
+import { useLocalStorage } from '../hooks/useLocalStorage'
 import { TimeEntry } from '../types/timeTypes'
 import { floor } from 'mathjs'
 import { EventID } from '../types/eventTypes'
@@ -21,13 +22,13 @@ export interface Session {
   eventId: EventID
 }
 
-const initialSessionList = JSON.parse(
-  localStorage.getItem('sessionList') ||
-    '[{"name":"1","timeList":[],"eventId":"333"}]'
-)
-const initialCurrentIndex = JSON.parse(
-  localStorage.getItem('currentIndex') || '0'
-)
+const INITIAL_SESSION: Session[] = [
+  {
+    name: '1',
+    timeList: [],
+    eventId: '333',
+  },
+]
 
 export const SessionContext: React.Context<SessionContextType> = createContext(
   {} as SessionContextType
@@ -36,17 +37,15 @@ export const SessionContext: React.Context<SessionContextType> = createContext(
 export const SessionProvider = ({
   children,
 }: React.PropsWithChildren): JSX.Element => {
-  const [sessionList, setSessionList] = useState<Session[]>(initialSessionList)
-  const [currentIndex, setCurrentIndex] = useState<number>(initialCurrentIndex)
+  const [sessionList, setSessionList] = useLocalStorage<Session[]>(
+    'sessionList',
+    INITIAL_SESSION
+  )
+  const [currentIndex, setCurrentIndex] = useLocalStorage<number>(
+    'currentIndex',
+    0
+  )
   let currentSession = sessionList[currentIndex]
-
-  useEffect(() => {
-    localStorage.setItem('sessionList', JSON.stringify(sessionList))
-  }, [sessionList])
-
-  useEffect(() => {
-    localStorage.setItem('currentIndex', JSON.stringify(currentIndex))
-  }, [currentIndex])
 
   /* Submit a time to the current session */
   const submitTime = (timeInSeconds: number, scramble: string): void => {
@@ -114,7 +113,7 @@ export const SessionProvider = ({
   const context: SessionContextType = {
     sessionList,
     currentSession,
-    currentIndex: currentIndex,
+    currentIndex,
     setCurrent: setCurrentIndex,
     submitTime,
     deleteTime,
