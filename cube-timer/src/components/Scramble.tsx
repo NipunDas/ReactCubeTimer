@@ -18,7 +18,7 @@ export const Scramble: React.FunctionComponent = (): JSX.Element => {
 
   return (
     <Grid container spacing={2}>
-      <Grid size={12}>
+      <Grid size={10}>
         <Typography variant="h5" align="center">
           {scramble}
         </Typography>

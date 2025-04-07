@@ -8,6 +8,7 @@ const SECONDS_IN_HOUR = 3600
  * Converts a numerical time in seconds into a string to be displayed externally.
  * @param timeInSeconds The numerical time to be converted
  * @param numPlaces The number of decimal places in the outputted string (default: 2)
+ * @returns A string representing how the time is visually formatted
  */
 export const displayTime = (
   timeInSeconds: number,
@@ -40,7 +41,7 @@ export const displayTime = (
 /**
  * Parses a string input into a numerical time in seconds
  * @param input The string to be parsed into an integer
- * @returns 10
+ * @returns The time in seconds
  */
 export const parseTimeString = (input: string): number | undefined => {
   const integerRegex = /^\d+$/

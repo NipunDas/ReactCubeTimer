@@ -16,7 +16,7 @@ const displayAverageFromIndex = (
   list: number[],
   index: number,
   x: number
-): JSX.Element | string => {
+): React.ReactNode => {
   if (index < 0 || index > list.length) {
     return '-'
   }

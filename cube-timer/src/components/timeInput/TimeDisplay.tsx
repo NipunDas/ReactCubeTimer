@@ -38,9 +38,10 @@ export const TimeDisplay: React.FunctionComponent = (): JSX.Element => {
   }
 
   const endTimer = () => {
-    setNow(Date.now())
+    const lastNow = Date.now()
+    setNow(lastNow)
     clearInterval(timerInterval.current)
-    submitTime(timeInSeconds, scramble)
+    submitTime((lastNow - startTime) / 1000.0, scramble)
     fetchScramble()
   }
 
@@ -106,7 +107,7 @@ export const TimeDisplay: React.FunctionComponent = (): JSX.Element => {
   })
 
   return (
-    <div className="timer" style={{ color: color }}>
+    <div className="timer" style={{ color }}>
       {displayTime(timeInSeconds)}
     </div>
   )
