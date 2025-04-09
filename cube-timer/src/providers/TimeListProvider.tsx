@@ -1,6 +1,6 @@
 import React, { useState, createContext } from 'react'
 import { TimeEntry } from '../types/timeTypes'
-import { mean, round, floor } from 'mathjs'
+import { mean, round, floor, sort } from 'mathjs'
 
 interface TimeListContextType {
   timeList: TimeEntry[]
@@ -29,7 +29,7 @@ export const calculateAverage = (list: number[]): number | undefined => {
     return undefined
   }
 
-  list.sort()
+  sort(list, 'asc')
 
   const excludeMargin = list.length <= 2 ? 0 : Math.ceil(list.length * 0.05)
   const counting = list.slice(excludeMargin, list.length - excludeMargin)
