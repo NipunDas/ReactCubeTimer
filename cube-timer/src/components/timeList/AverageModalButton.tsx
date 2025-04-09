@@ -6,6 +6,7 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Modal from '@mui/material/Modal'
 import { TextField } from '@mui/material'
+import { sort } from 'mathjs'
 
 export interface AverageModalProps {
   startIndex: number
@@ -29,7 +30,7 @@ export const AverageModalButton: React.FunctionComponent<AverageModalProps> = ({
 
   const excludeMargin = count <= 2 ? 0 : Math.ceil(count * 0.05)
   const excluded = subList.map((entry, index) => entry.timeInSeconds)
-  excluded.sort()
+  sort(excluded, 'asc')
   excluded.splice(excludeMargin, count - 2 * excludeMargin)
 
   let averageSummary = `Average of ${count}: ${timeString}\n\nTime List:\n`
